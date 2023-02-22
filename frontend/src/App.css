@@ -1,0 +1,16 @@
+.chat-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 60vh;
+    margin: 0 37.5%;
+}
+
+textarea {
+    resize: none;
+}
+
+.MuiPaper-root{
+    height: 400px;
+    max-height: 400px;
+}
