@@ -1,14 +1,14 @@
 import "../App.css";
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { useParams, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
+import Avatar from "@mui/material/Avatar";
 
 const Chatroom = () => {
+	const dummy = useRef();
 	const { room_name } = useParams();
 	const location = useLocation();
 	const username = location.state.username;
@@ -29,6 +29,10 @@ const Chatroom = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		return dummy.current.scrollIntoView({ behavior: "smooth" });
+	}, [messages]);
+
 	const onButtonClicked = (e) => {
 		client.send(
 			JSON.stringify({
@@ -36,10 +40,27 @@ const Chatroom = () => {
 				message: message,
 			})
 		);
+		console.log(messages);
+		dummy.current.scrollIntoView({ behavior: "smooth" });
 	};
 
 	let messageList = messages.map((user, index) => {
-		return <CardHeader key={index} title={user.user} subheader={user.msg} />;
+		let messageClass = "";
+		let color = null;
+		const avatar = user.user.slice(0, 1);
+		if (username === user.user) {
+			messageClass = "sent";
+			color = "#0b93f6";
+		} else {
+			messageClass = "received";
+			color = "#06cc8d";
+		}
+		return (
+			<div key={index} className={`message ${messageClass}`}>
+				<Avatar sx={{ bgcolor: color }}>{avatar}</Avatar>
+				<p key={index}>{user.msg}</p>
+			</div>
+		);
 	});
 
 	return (
@@ -47,8 +68,9 @@ const Chatroom = () => {
 			<h2>Room Name:{room_name}</h2>
 			<h2>User name:{username}</h2>
 			<div className="chat-div">
-				<Paper variant="outlined">
-					<Card>{messageList}</Card>
+				<Paper variant="outlined" style={{ height: 500, maxHeight: 400, overflow: "auto" }}>
+					{messageList}
+					<div ref={dummy}></div>
 				</Paper>
 				<TextField
 					className="chat-input"

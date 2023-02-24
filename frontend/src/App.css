@@ -1,3 +1,5 @@
+
+  
 .chat-div {
     display: flex;
     flex-direction: column;
@@ -10,8 +12,49 @@ textarea {
     resize: none;
 }
 
-.MuiPaper-root{
-    height: 400px;
-    max-height: 400px;
-    overflow: auto;
+/* .MuiPaper-root{
+    background: black
+} */
+
+.MuiAvatar-root{   
+    margin: 0 3px;
+}
+
+p {
+    display: flex;
+    align-items: center;
+    max-width: 500px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    line-height: 24px;
+    padding: 8px 20px;
+    border-radius: 25px;
+    position: relative;
+    color: black;
+    text-align: center;
+}
+ 
+.message div{
+    border: none;
+}
+
+.message {
+    display: flex;
+    align-items: center;
+}
+  
+.sent {
+    flex-direction: row-reverse;
+  }
+  
+.sent p {
+    color: white;
+    background: #0b93f6;
+    align-self: flex-end;
+    text-align: end;
+}
+
+.received p {
+    background: #06cc8d;
+    color: white;;
 }
