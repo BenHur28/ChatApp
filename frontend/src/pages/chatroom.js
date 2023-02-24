@@ -9,9 +9,9 @@ import Avatar from "@mui/material/Avatar";
 
 const Chatroom = () => {
 	const dummy = useRef();
-	const { room_name } = useParams();
 	const location = useLocation();
 	const username = location.state.username;
+	const { room_name } = useParams();
 	const [message, setMessage] = useState(null);
 	const [messages, setMessages] = useState([]);
 	const client = new W3CWebSocket(`ws://127.0.0.1:8000/ws/chat/${room_name}/`);
@@ -23,7 +23,6 @@ const Chatroom = () => {
 		client.onmessage = (event) => {
 			const data = JSON.parse(event.data);
 			if (data) {
-				console.log(messages);
 				setMessages((messages) => [...messages, { user: data.user, msg: data.message.value }]);
 			}
 		};
@@ -40,8 +39,12 @@ const Chatroom = () => {
 				message: message,
 			})
 		);
-		console.log(messages);
-		dummy.current.scrollIntoView({ behavior: "smooth" });
+	};
+
+	const enter = (e) => {
+		if (e.key === "Enter") {
+			onButtonClicked();
+		}
 	};
 
 	let messageList = messages.map((user, index) => {
@@ -65,8 +68,10 @@ const Chatroom = () => {
 
 	return (
 		<div className="container">
-			<h2>Room Name:{room_name}</h2>
-			<h2>User name:{username}</h2>
+			<div className="header">
+				<h2>Welcome {username} </h2>
+				<h2>Room Name: {room_name}</h2>
+			</div>
 			<div className="chat-div">
 				<Paper variant="outlined" style={{ height: 500, maxHeight: 400, overflow: "auto" }}>
 					{messageList}
@@ -80,8 +85,9 @@ const Chatroom = () => {
 					onChange={(e) => {
 						setMessage({ value: e.target.value });
 					}}
+					onKeyPress={enter}
 				></TextField>
-				<Button type="submit" variant="contained" id="chat-message-submit" onClick={onButtonClicked}>
+				<Button type="button" variant="contained" id="chat-message-submit" onClick={onButtonClicked}>
 					Send Message
 				</Button>
 			</div>

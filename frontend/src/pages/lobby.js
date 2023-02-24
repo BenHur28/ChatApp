@@ -28,7 +28,10 @@ const Lobby = () => {
 
 	return (
 		<div className="container">
-			<div className="chat-div">
+			<div className="header">
+				<h2>Welcome to ChatApp</h2>
+			</div>
+			<div className="lobby-div">
 				<TextField
 					className="room-input"
 					id="outlined-basic"
